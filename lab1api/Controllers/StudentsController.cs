@@ -57,7 +57,6 @@ namespace lab1api.Controllers
 						Name = g.Key.StudentName,
 						Passbook = g.Key.StudentPassbook,
 						Group = g.Key.StudentGroup,
-						AttendencyCount = g.Count(),
 						AttendencyPercent = (double)g.Count() / (double)context.Timetables
 							.Count(t => t.Date >= startDate && t.Date <= endDate 
 							                                && t.GroupId == g.Key.GroupId 
