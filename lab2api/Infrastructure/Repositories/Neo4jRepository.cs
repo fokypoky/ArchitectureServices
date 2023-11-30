@@ -7,7 +7,7 @@ namespace lab2api.Infrastructure.Repositories
 	{
 		public async Task<IEnumerable<int>> GetVisitsCount(DateTime? date, int lectureId)
 		{
-			var client = new BoltGraphClient(new Uri("bolt://localhost:1933"), "neo4j", "dr22042002");
+			var client = new BoltGraphClient(new Uri("bolt://neo4j:7687"), "neo4j", "dr22042002");
 			await client.ConnectAsync();
 
 
