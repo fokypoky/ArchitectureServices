@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace gatewayapi.Controllers
 {
@@ -7,10 +8,27 @@ namespace gatewayapi.Controllers
 	[ApiController]
 	public class Lab1Controller : ControllerBase
 	{
-		[HttpGet]
-		public ActionResult Get(DateTime startDate, DateTime endDate, string phrase)
+		private readonly HttpClient _httpClient;
+		public Lab1Controller()
 		{
-			return Ok("Lab 1 controller");
+			_httpClient = new HttpClient();
+			_httpClient.BaseAddress = new Uri("http://localhost:6212/");
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> Get(DateTime startDate, DateTime endDate, string phrase)
+		{
+			try
+			{
+				var response = await _httpClient.GetAsync($"api/Students?startDate={startDate}&endDate={endDate}&phrase={phrase}");
+				response.EnsureSuccessStatusCode();
+				string responseBody = await response.Content.ReadAsStringAsync();
+				return Ok(responseBody);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
 		}
 	}
 }
