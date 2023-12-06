@@ -1,0 +1,43 @@
+﻿@using RequestsVisualizer.Models.Lab1
+@model StudentAttendenceReport;
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=display-width"/>
+	<title>Attend report</title>
+	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css"/>
+</head>
+<body>
+<div class="text-center p-2">
+	@if (Model.Error == null)
+	{
+		<h2>For lectures containing '@Model.Phrase'</h2>
+			<table class="table table-bordered table-striped table-sm">
+			<thead>
+					<tr class="table-primary"> <th>Name</th> <th>Group</th> <th>Attend</th> <th>Attend &#37;</th> </tr>
+			</thead>
+			<tbody>
+			@foreach (StudentAttend attend in Model.Attends)
+			{
+				<tr>
+					<td>@attend.Name</td>
+					<td>@attend.Group</td>
+					<td>@attend.AttendencyCount</td>
+					<td>@attend.AttendencyPercent</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	}
+	else
+	{
+		<div class="text-center">
+			<h2>@Model.Error</h2>
+		</div>
+	}
+</div>
+</body>
+</html>

@@ -1,20 +1,35 @@
 ﻿@{
 	Layout = null;
 }
+<!DOCTYPE HTML>
 
-<!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width" />
+	<meta name="viewport" content="width=display-width"/>
 	<title>Аналитические запросы</title>
-</head>
-<body>
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
+	<style>
+		.btns-container {
+			margin-top: 19%;
+		}
 
-<div class="form-group center">
-	<a asp-action="Lab1"  class="form-control btn btn-primary">Лабораторная работа №1</a>
-	<a asp-action="Lab3" class="form-control btn btn-primary">Лабораторная работа №3</a>
+		.labbtn {
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+
+<body>
+<div class="text-center btns-container">
+	<div class="text-center">
+		<a class="btn btn-primary labbtn" asp-action="Lab1">Лабораторная работа №1</a>
+	</div>
+	<div class="text-center">
+		<a class="btn btn-primary labbtn" asp-action="Lab2">Лабораторная работа №2</a>
+	</div>
+	<div class="text-center">
+		<a class="btn btn-primary labbtn" asp-action="Lab3">Лабораторная работа №3</a>
+	</div>
 </div>
 </body>
 </html>

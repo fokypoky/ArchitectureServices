@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lab3api", "lab3api\lab3api.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RequestsVisualizer", "RequestsVisualizer\RequestsVisualizer.csproj", "{4634D0C3-A6C7-4288-98F0-9495779B4A3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gatewayapi", "gatewayapi\gatewayapi.csproj", "{95F0D6ED-73B4-478A-8F62-CE5FE3B9C3A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gatewayapi", "gatewayapi\gatewayapi.csproj", "{95F0D6ED-73B4-478A-8F62-CE5FE3B9C3A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
