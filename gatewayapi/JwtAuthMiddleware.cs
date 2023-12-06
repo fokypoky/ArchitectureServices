@@ -1,6 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 namespace gatewayapi
 {
@@ -18,30 +18,35 @@ namespace gatewayapi
 			if (controllerName != "Auth")
 			{
 				var header = context.Request.Headers["Authorization"].FirstOrDefault();
-				if (header != null)
+				if (header is null)
 				{
-					var token = header.Split(" ").Last();
-					var tokenHandler = new JwtSecurityTokenHandler();
-
-					var validationParameters = new TokenValidationParameters()
-					{
-						IssuerSigningKey =
-							new SymmetricSecurityKey(Encoding.UTF8.GetBytes("keykeykeykeykeykeykeykeykeykey12")),
-						ValidateAudience = false,
-						ValidateIssuer = false
-					};
-
-					try
-					{
-						tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-					}
-					catch
-					{
-						context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-						await context.Response.WriteAsync("Invalid token");
-						return;
-					}
+					context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+					await context.Response.WriteAsync("Missing token");
+					return;
 				}
+
+				var token = header.Split(" ").Last();
+				var tokenHandler = new JwtSecurityTokenHandler();
+
+				var validationParameters = new TokenValidationParameters()
+				{
+					IssuerSigningKey =
+						new SymmetricSecurityKey(Encoding.UTF8.GetBytes("keykeykeykeykeykeykeykeykeykey12")),
+					ValidateAudience = false,
+					ValidateIssuer = false
+				};
+
+				try
+				{
+					tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+				}
+				catch
+				{
+					context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+					await context.Response.WriteAsync("Invalid token");
+					return;
+				}
+
 			}
 
 			await _next(context);
