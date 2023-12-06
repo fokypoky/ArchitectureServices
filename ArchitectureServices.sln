@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lab2api", "lab2api\lab2api.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lab3api", "lab3api\lab3api.csproj", "{F14488B0-70C7-4D63-901D-EFEAD1970FE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestsVisualizer", "RequestsVisualizer\RequestsVisualizer.csproj", "{4634D0C3-A6C7-4288-98F0-9495779B4A3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RequestsVisualizer", "RequestsVisualizer\RequestsVisualizer.csproj", "{4634D0C3-A6C7-4288-98F0-9495779B4A3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gatewayapi", "gatewayapi\gatewayapi.csproj", "{95F0D6ED-73B4-478A-8F62-CE5FE3B9C3A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4634D0C3-A6C7-4288-98F0-9495779B4A3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4634D0C3-A6C7-4288-98F0-9495779B4A3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4634D0C3-A6C7-4288-98F0-9495779B4A3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95F0D6ED-73B4-478A-8F62-CE5FE3B9C3A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95F0D6ED-73B4-478A-8F62-CE5FE3B9C3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95F0D6ED-73B4-478A-8F62-CE5FE3B9C3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95F0D6ED-73B4-478A-8F62-CE5FE3B9C3A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
