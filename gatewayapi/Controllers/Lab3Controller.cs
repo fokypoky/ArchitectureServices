@@ -11,7 +11,7 @@ namespace gatewayapi.Controllers
 		public Lab3Controller()
 		{
 			_httpClient = new HttpClient();
-			_httpClient.BaseAddress = new Uri("http://localhost:7741/");
+			_httpClient.BaseAddress = new Uri("http://api3:80/");
 		}
 		[HttpGet]
 		public async Task<ActionResult> Get(string groupNumber, DateTime startDate, DateTime endDate)

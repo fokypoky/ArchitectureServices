@@ -11,7 +11,7 @@ namespace gatewayapi.Controllers
 		public Lab2Controller()
 		{
 			_httpClient = new HttpClient();
-			_httpClient.BaseAddress = new Uri("http://localhost:9099/");
+			_httpClient.BaseAddress = new Uri("http://api2:80/");
 		}
 
 		[HttpGet]

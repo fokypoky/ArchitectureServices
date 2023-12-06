@@ -12,7 +12,7 @@ namespace gatewayapi.Controllers
 		public Lab1Controller()
 		{
 			_httpClient = new HttpClient();
-			_httpClient.BaseAddress = new Uri("http://localhost:6212/");
+			_httpClient.BaseAddress = new Uri("http://api1:80/");
 		}
 
 		[HttpGet]
