@@ -9,7 +9,7 @@ namespace lab2api.Infrastructure.Repositories
 		{
 			var client = new BoltGraphClient(new Uri("bolt://neo4j:7687"), "neo4j", "dr22042002");
 			await client.ConnectAsync();
-
+			
 
 			var query = new CypherFluentQuery(client)
 				.Match("(s:Student)-[:STUDY_IN]->(g:Group)-[:VISITS]->(t:Timetable), (l:Lecture)-[:READS]->(t)")
