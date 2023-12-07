@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using lab1api.Models;
 using Microsoft.EntityFrameworkCore;
-using lab1api.Models;
 
 namespace lab3api.Infrastructure.Repositories;
 

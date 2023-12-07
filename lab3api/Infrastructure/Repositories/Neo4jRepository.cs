@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using Neo4j.Driver;
-using Neo4jClient;
+﻿using Neo4jClient;
 using Neo4jClient.Cypher;
 
 namespace lab3api.Infrastructure.Repositories
