@@ -2,7 +2,10 @@
 {
 	public class Report
 	{
-		public string GroupName { get; set; }
+		public string GroupNumber { get; set; }
+		public int StudentsCount { get; set; }
+		public string DepartmentTitle { get; set; }
+		public string SpecialityCode { get; set; }
 		public List<CourseReport> CourseReports { get; set; }
 		public string? Error { get; set; }
 	}

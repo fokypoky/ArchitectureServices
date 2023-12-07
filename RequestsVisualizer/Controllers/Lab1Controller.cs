@@ -28,7 +28,7 @@ namespace RequestsVisualizer.Controllers
 
 			try
 			{
-				httpClient.BaseAddress = new Uri("http://localhost:1162/");
+				httpClient.BaseAddress = new Uri("http://gateway:80/");
 				httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {reportRequest.Token}");
 
 				var response = await httpClient.GetAsync(

@@ -29,11 +29,14 @@
 @if (Model.Error == null)
 {
 	<div class="text-center p-2">
-		<h1>For group '@Model.GroupName'</h1>
+		<h1>For group '@Model.GroupNumber'</h1>
+	</div>
+
+	<div class="text-center p-2">
+			<h2 class="info-header">All courses and lectures info: </h2>
 	</div>
 
 	<div>
-		<h2 class="info-header">All courses and lectures info: </h2>
 		<ol>
 			@foreach (var course in @Model.CourseReports)
 			{
@@ -53,27 +56,49 @@
 	</div>
 
 	<div class="text-center p-2">
+		<h3>Group info</h3>
+		<table class="table table-bordered table-striped table-sm">
+			<thead>
+			<tr>
+				<th>Number</th> <th>Students count</th> <th>Department</th> <th>Speciality</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>@Model.GroupNumber</td>
+				<td>@Model.StudentsCount</td>
+				<td>@Model.DepartmentTitle</td>
+				<td>@Model.SpecialityCode</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="text-center p-2">
 		@foreach (var course in @Model.CourseReports)
 		{
 			<h3>'@course.CourseTitle' lectures reports</h3>
 			@foreach (var lecture in @course.LectureReports)
 			{
+				var index = 1;
 				<h4>@lecture.LectureType @lecture.LectureAnnotation</h4>
 				<table class="table table-bordered table-striped table-sm">
 					<thead>
 					<tr>
-						<th>Name</th> <th>Passbook</th> <th>Listened</th> <th>Planned</th>
+						<th>№</th> <th>Name</th> <th>Passbook</th> <th>Listened</th> <th>Planned</th>
 					</tr>
 					</thead>
 					<tbody>
 						@foreach (var student in @lecture.StudentReports.OrderBy(s => s.Name).ToList())
 						{
 							<tr>
+								<td>@index</td>
 								<td>@student.Name</td>
 								<td>@student.Passbook</td>
 								<td>@student.ListenedHours</td>
 								<td>@lecture.PlannedHours</td>
 							</tr>
+							index = index + 1;
 						}
 					</tbody>
 				</table>

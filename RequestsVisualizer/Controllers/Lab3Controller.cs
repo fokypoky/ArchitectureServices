@@ -27,7 +27,7 @@ namespace RequestsVisualizer.Controllers
 
 			try
 			{
-				httpClient.BaseAddress = new Uri("http://localhost:1162/");
+				httpClient.BaseAddress = new Uri("http://gateway:80/");
 				httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {reportRequest.Token}");
 
 				var response = await httpClient.GetAsync(
@@ -35,9 +35,7 @@ namespace RequestsVisualizer.Controllers
 				response.EnsureSuccessStatusCode();
 
 				var responseBody = await response.Content.ReadAsStringAsync();
-				var courseReports = JsonConvert.DeserializeObject<List<CourseReport>>(responseBody);
-
-				var report = new Report() { CourseReports = courseReports, GroupName = reportRequest.GroupNumber };
+				var report = JsonConvert.DeserializeObject<Report>(responseBody);
 
 				return View("Report", report);
 			}
