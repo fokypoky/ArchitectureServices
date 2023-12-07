@@ -1,0 +1,53 @@
+﻿@using RequestsVisualizer.Models.Lab2;
+@model Report;
+
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=display-width"/>
+	<title>Lecture report</title>
+	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css"/>
+</head>
+<body>
+<div class="text-center p-2">
+	@if (Model.Error == null)
+	{
+		<h2>For course '@Model.CourseTitle'</h2>
+		<table class="table table-bordered table-striped table-sm">
+			<thead>
+			<tr class="table-primary"> <th>Annotation</th> <th>Requirements</th> <th>Type</th> <th>ListenersCount</th> </tr>
+			</thead>
+			<tbody>
+			@foreach (var lecture in Model.LectureReports)
+			{
+				<tr>
+					<td>@lecture.Annotation</td>
+					<td>
+						@if (@lecture.Requirements == null)
+						{
+							<p>NONE</p>
+						}
+						else
+						{
+							@lecture.Requirements
+						}
+					</td>
+					<td>@lecture.Type</td>
+					<td>@lecture.ListenersCount</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	}
+	else
+	{
+		<div class="text-center">
+			<h2>Error. @Model.Error</h2>
+		</div>
+	}
+</div>
+</body>
+</html>
