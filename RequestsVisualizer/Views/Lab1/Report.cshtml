@@ -17,7 +17,7 @@
 		<h2>For lectures containing '@Model.Phrase'</h2>
 			<table class="table table-bordered table-striped table-sm">
 			<thead>
-					<tr class="table-primary"> <th>Name</th> <th>Group</th> <th>Attend</th> <th>Attend &#37;</th> </tr>
+					<tr class="table-primary"> <th>Name</th> <th>Group</th> <th>Attend</th> </tr>
 			</thead>
 			<tbody>
 			@foreach (StudentAttend attend in Model.Attends)
@@ -25,7 +25,6 @@
 				<tr>
 					<td>@attend.Name</td>
 					<td>@attend.Group</td>
-					<td>@attend.AttendencyCount</td>
 					<td>@attend.AttendencyPercent</td>
 				</tr>
 			}
