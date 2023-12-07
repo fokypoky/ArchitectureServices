@@ -16,6 +16,7 @@ namespace lab3api.Controllers
 			using (var context = new ApplicationContext())
 			{
 				var group = context.Groups
+					.Include(g => g.Speciality)
 					.Include(g => g.Students)
 					.Include(g => g.Department)
 						.ThenInclude(d => d.MainSpeciality)
@@ -25,7 +26,6 @@ namespace lab3api.Controllers
 				{
 					return NotFound("Group not found");
 				}
-
 
 				var courseTitles = new Neo4jRepository()
 					.GetCoursesByGroupAndDepartment(group.Number, group.Department.Title,
@@ -78,7 +78,7 @@ namespace lab3api.Controllers
 						{
 							var visitedStudent =
 								visits.FirstOrDefault(v => v.StudentPassbook == student.PassbookNumber);
-							// не посещал
+							
 							if (visitedStudent == null)
 							{
 								studentReports.Add(new StudentReport() {ListenedHours = 0, Name = student.Name, Passbook = student.PassbookNumber});
@@ -99,8 +99,16 @@ namespace lab3api.Controllers
 					reports.Add(courseReport);
 				}
 
-				return Ok(JsonConvert.SerializeObject(reports));
+				var finalReport = new Report()
+				{
+					CourseReports = reports,
+					DepartmentTitle = group.Department.Title,
+					GroupNumber = group.Number,
+					StudentsCount = group.Students.Count,
+					SpecialityCode = group.Speciality.Code
+				};
 
+				return Ok(JsonConvert.SerializeObject(finalReport));
 			}
 		}
 	}
