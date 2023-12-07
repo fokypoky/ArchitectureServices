@@ -7,7 +7,7 @@ getTokenButton.addEventListener('click', function (event) {
 	var login = document.getElementById('login-input').value;
 	var password = document.getElementById('password-input').value;
 
-	var url = 'http://localhost:1162/api/auth?login=' + login + '&password=' + password;
+	var url = 'http://visual_mvc:80/api/auth?login=' + login + '&password=' + password;
 	console.log(url);
 	fetch(url)
 		.then(response => {
