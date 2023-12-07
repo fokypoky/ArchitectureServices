@@ -12,7 +12,7 @@ namespace RequestsVisualizer.Controllers
 			return View();
 		}
 
-		[HttpPost]
+		[HttpGet]
 		public async Task<IActionResult> GetReport(ReportRequest reportRequest)
 		{
 			#region Input validation
