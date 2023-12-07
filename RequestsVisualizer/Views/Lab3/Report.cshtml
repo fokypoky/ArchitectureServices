@@ -1,0 +1,91 @@
+﻿@using RequestsVisualizer.Models.Lab3;
+@model Report;
+@{
+	Layout = null;
+
+	string getRequirements(string requirements)
+	{
+		if (requirements == null)
+		{
+			return "NONE";
+		}
+
+		return requirements;
+	}
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=display-width" />
+	<title>Lecture report</title>
+	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css"/>
+	<style>
+		.info-header{
+			margin-left: 15px;
+		}
+	</style>
+</head>
+<body>
+@if (Model.Error == null)
+{
+	<div class="text-center p-2">
+		<h1>For group '@Model.GroupName'</h1>
+	</div>
+
+	<div>
+		<h2 class="info-header">All courses and lectures info: </h2>
+		<ol>
+			@foreach (var course in @Model.CourseReports)
+			{
+				<li>
+					@course.CourseTitle:
+					<ul>
+						@foreach (var lecture in @course.LectureReports)
+						{
+							<li>
+								@lecture.LectureType @lecture.LectureAnnotation. R: @getRequirements(@lecture.LectureRequirements).
+							</li>
+						}
+					</ul>
+				</li>
+			}
+		</ol>
+	</div>
+
+	<div class="text-center p-2">
+		@foreach (var course in @Model.CourseReports)
+		{
+			<h3>'@course.CourseTitle' lectures reports</h3>
+			@foreach (var lecture in @course.LectureReports)
+			{
+				<h4>@lecture.LectureType @lecture.LectureAnnotation</h4>
+				<table class="table table-bordered table-striped table-sm">
+					<thead>
+					<tr>
+						<th>Name</th> <th>Passbook</th> <th>Listened</th> <th>Planned</th>
+					</tr>
+					</thead>
+					<tbody>
+						@foreach (var student in @lecture.StudentReports)
+						{
+							<tr>
+								<td>@student.Name</td>
+								<td>@student.Passbook</td>
+								<td>@student.ListenedHours</td>
+								<td>@lecture.PlannedHours</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+		}
+	</div>
+}
+else
+{
+	<div class="text-center">
+		<h2>Error. @Model.Error</h2>
+	</div>
+}
+</body>
+</html>

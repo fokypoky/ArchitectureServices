@@ -1,5 +1,44 @@
-﻿@{
+﻿@using RequestsVisualizer.Models.Lab3;
+@model ReportRequest;
+
+@{
 	Layout = null;
 }
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=display-width" />
+	<title>Лабораторная работа №3</title>
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+	<form class="m-2" asp-action="GetReport" method="get">
+		<div class="form-group">
+			<label>Login</label>
+			<input class="form-control" id="login-input" />
 
-LAB 3
+			<label>Password</label>
+			<input class="form-control" id="password-input" type="password" />
+
+			<a class="btn btn-primary form-btn" id="getToken">Get token</a>
+			<br />
+			<label>Token</label>
+			<input class="form-control" id="tokenOutput" asp-for="Token" />
+		</div>
+		<div class="form-group">
+			<label>Start date</label>
+			<input class="form-control" type="date" asp-for="StartDate" />
+
+			<label>End date</label>
+			<input class="form-control" type="date" asp-for="EndDate" />
+
+			<label>Group number</label>
+			<input class="form-control" asp-for="GroupNumber" />
+
+			<button type="submit" class="btn btn-primary form-btn">Get report</button>
+		</div>
+	</form>
+	<script type="text/javascript" src="js/getTokenScript.js"></script>
+</body>
+</html>
