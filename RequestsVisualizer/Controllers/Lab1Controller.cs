@@ -42,7 +42,9 @@ namespace RequestsVisualizer.Controllers
 				{
 					Attends = studentAttends,
 					Error = null,
-					Phrase = reportRequest.Phrase
+					Phrase = reportRequest.Phrase,
+					StartDate = reportRequest.StartDate,
+					EndDate = reportRequest.EndDate
 				};
 
 				return View("Report", report);
