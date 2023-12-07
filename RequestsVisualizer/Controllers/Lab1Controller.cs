@@ -15,6 +15,15 @@ namespace RequestsVisualizer.Controllers
 		[HttpPost]
 		public async Task<IActionResult> GetReport(ReportRequest reportRequest)
 		{
+			#region Input validation
+
+			if (String.IsNullOrEmpty(reportRequest.Phrase))
+			{
+				return View("Report", new StudentAttendenceReport() { Error = "Empty phrase" });
+			}
+			
+			#endregion
+
 			var httpClient = new HttpClient();
 
 			try
