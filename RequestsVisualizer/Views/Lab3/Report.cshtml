@@ -66,7 +66,7 @@
 					</tr>
 					</thead>
 					<tbody>
-						@foreach (var student in @lecture.StudentReports)
+						@foreach (var student in @lecture.StudentReports.OrderBy(s => s.Name).ToList())
 						{
 							<tr>
 								<td>@student.Name</td>
