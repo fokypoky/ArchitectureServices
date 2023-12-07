@@ -9,11 +9,7 @@
 	<meta name="viewport" content="width=display-width" />
 	<title>Лабораторная работа №1</title>
 	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
-	<style>
-		.form-btn{
-			margin-top: 5px;
-		}
-	</style>
+	<link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
 <form class="m-2" asp-action="GetReport" method="post">
@@ -23,7 +19,7 @@
 
 		<label>Password</label>
 		<input class="form-control" id="password-input" type="password"/>
-		
+
 		<a class="btn btn-primary form-btn" id="getToken">Get token</a>
 		<br/>
 		<label>Token</label>
@@ -32,44 +28,16 @@
 	<div class="form-group">
 		<label>Start date</label>
 		<input class="form-control" type="date" asp-for="StartDate"/>
-		
+
 		<label>End date</label>
 		<input class="form-control" type="date" asp-for="EndDate"/>
-		
+
 		<label>Phrase</label>
 		<input class="form-control" asp-for="Phrase"/>
 
 		<button type="submit" class="btn btn-primary form-btn">Get report</button>
 	</div>
 </form>
-
-<script>
-	var getTokenButton = document.getElementById('getToken');
-	var tokenOutput = document.getElementById('tokenOutput');
-
-	getTokenButton.addEventListener('click', function(event){
-		event.preventDefault();
-
-		var login = document.getElementById('login-input').value;
-		var password = document.getElementById('password-input').value;
-		
-		var url = 'http://localhost:1162/api/auth?login=' + login + '&password=' + password;
-		console.log(url);
-			fetch(url)
-			.then(response => {
-				if (!response.ok) {
-					throw new Error(response.body);
-				}
-				return response.text();
-			})
-			.then(data => {
-				tokenOutput.value = data;
-			})
-			.catch(error => {
-				tokenOutput.value = error;
-			});
-	});
-</script>
-
+<script type="text/javascript" src="js/getTokenScript.js"></script>
 </body>
 </html>
