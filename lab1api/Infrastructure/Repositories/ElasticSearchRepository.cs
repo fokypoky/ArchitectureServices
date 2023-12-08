@@ -7,7 +7,7 @@ namespace lab1api.Infrastructure.Repositories.Repositories
 	{
 		public List<string>? GetByPhrase(string phrase)
 		{
-			var node = new Uri("http://localhost:10103");
+			var node = new Uri("http://elastic-s:9200");
 			var settings = new ConnectionSettings(node).DefaultIndex("lecture_materials");
 
 			var client = new ElasticClient(settings);
