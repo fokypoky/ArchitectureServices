@@ -1,0 +1,93 @@
+version: '3'
+services:
+  visual_mvc:
+    container_name: visual_mvc
+    image: requestsvisualizer
+    ports:
+      - "666:80"
+    depends_on:
+      - api1
+      - api2
+      - api3
+      - gateway 
+  gateway:
+    container_name: gateway
+    image: gatewayapi
+    ports:
+      - "1162:80"
+    depends_on:
+      - api1
+      - api2
+      - api3
+
+  api1:
+    container_name: api1
+    image: lab1api
+    ports:
+      - "6212:80"
+    depends_on:
+      - postgre
+      - elastic-s
+      - neo4j
+  api3:
+    container_name: api3
+    image: lab3api
+    ports:
+      - "7741:80"
+    depends_on:
+      - postgre
+      - elastic-s
+      - neo4j
+  
+  api2:
+    container_name: api2
+    image: lab2api
+    ports:
+      - "9099:80"
+    depends_on:
+      - postgre
+      - neo4j
+
+  postgre:
+    container_name: postgre
+    image: postgres:latest
+    ports:
+      - "10210:5432"
+    environment:
+      - POSTGRES_USER=fokypoky
+      - POSTGRES_PASSWORD=toor
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  elastic-s:
+    container_name: elastic-s
+    image: elasticsearch:7.6.2
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elastic:/usr/share/elasticsearch/data
+    ports:
+      - "10103:9200"
+      - "10102:9300"
+  
+  neo4j:
+    container_name: neo4j
+    image: neo4j:latest
+    ports:
+      - "7474:7474"
+      - "1933:7687"
+    volumes:
+      - neo4j:/data
+    
+  
+
+volumes:
+  neo4j:
+    external: true
+    name: neo4j
+  postgres:
+    external: true
+    name: postgres
+  elastic:
+    external: true
+    name: elastic
