@@ -1,6 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using RequestsVisualizer.Infrastructure.Repositories;
 using RequestsVisualizer.Models.Lab2;
 
 namespace RequestsVisualizer.Controllers
@@ -13,7 +12,7 @@ namespace RequestsVisualizer.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetReport(ReportRequest reportRequest)
+		public IActionResult GetReport(ReportRequest reportRequest)
 		{
 			#region Input validation
 
@@ -24,34 +23,24 @@ namespace RequestsVisualizer.Controllers
 
 			#endregion
 
-			var httpClient = new HttpClient();
+			var request =
+				$"api/lab2?startdate={reportRequest.StartDate}&enddate={reportRequest.EndDate}&coursetitle={reportRequest.CourseTitle}";
+			var response = new HttpRepository<List<LectureReport>>("http://gateway:80/", reportRequest.Token)
+				.GetData(request).GetAwaiter().GetResult();
 
-			try
+			if (response.Status != 200)
 			{
-				httpClient.BaseAddress = new Uri("http://gateway:80/");
-				httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {reportRequest.Token}");
-
-				var response = await httpClient.GetAsync(
-					$"api/lab2?startdate={reportRequest.StartDate}&enddate={reportRequest.EndDate}&coursetitle={reportRequest.CourseTitle}");
-				response.EnsureSuccessStatusCode();
-
-				var responseBody = await response.Content.ReadAsStringAsync();
-				var lectureReports = JsonConvert.DeserializeObject<List<LectureReport>>(responseBody);
-
-				var report = new Report()
-				{
-					CourseTitle = reportRequest.CourseTitle,
-					Error = null,
-					LectureReports = lectureReports
-				};
-
-				return View("Report", report);
+				return View("Report", new Report() { Error = response.ErrorMessage });
 			}
-			catch (Exception ex)
+
+			var report = new Report()
 			{
-				return View("Report", new Report() { Error = ex.Message });
-			}
+				CourseTitle = reportRequest.CourseTitle,
+				Error = null,
+				LectureReports = response.Response
+			};
+			
+			return View("Report", report);
 		}
-
 	}
 }

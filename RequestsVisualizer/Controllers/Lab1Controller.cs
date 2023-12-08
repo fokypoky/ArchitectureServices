@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using RequestsVisualizer.Infrastructure.Repositories;
 using RequestsVisualizer.Models.Lab1;
 
 namespace RequestsVisualizer.Controllers
@@ -13,7 +13,7 @@ namespace RequestsVisualizer.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetReport(ReportRequest reportRequest)
+		public IActionResult GetReport(ReportRequest reportRequest)
 		{
 			#region Input validation
 
@@ -21,39 +21,30 @@ namespace RequestsVisualizer.Controllers
 			{
 				return View("Report", new StudentAttendenceReport() { Error = "Empty phrase" });
 			}
-			
+
 			#endregion
 
-			var httpClient = new HttpClient();
+			var request =
+				$"api/lab1?startdate={reportRequest.StartDate}&enddate={reportRequest.EndDate}&phrase={reportRequest.Phrase}";
+			var response =
+				new HttpRepository<List<StudentAttend>>("http://gateway:80/", reportRequest.Token)
+					.GetData(request).GetAwaiter().GetResult();
 
-			try
+			if (response.Status != 200)
 			{
-				httpClient.BaseAddress = new Uri("http://gateway:80/");
-				httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {reportRequest.Token}");
-
-				var response = await httpClient.GetAsync(
-					$"api/lab1?startdate={reportRequest.StartDate}&enddate={reportRequest.EndDate}&phrase={reportRequest.Phrase}");
-				response.EnsureSuccessStatusCode();
-
-				var responseBody = await response.Content.ReadAsStringAsync();
-				var studentAttends = JsonConvert.DeserializeObject<List<StudentAttend>>(responseBody);
-
-				var report = new StudentAttendenceReport()
-				{
-					Attends = studentAttends,
-					Error = null,
-					Phrase = reportRequest.Phrase,
-					StartDate = reportRequest.StartDate,
-					EndDate = reportRequest.EndDate
-				};
-
-				return View("Report", report);
+				return View("Report", new StudentAttendenceReport() { Error = response.ErrorMessage });
 			}
 
-			catch (Exception ex)
+			var report = new StudentAttendenceReport()
 			{
-				return View("Report", new StudentAttendenceReport() { Error = ex.Message });
-			}
+				Attends = response.Response,
+				Error = null,
+				Phrase = reportRequest.Phrase,
+				StartDate = reportRequest.StartDate,
+				EndDate = reportRequest.EndDate
+			};
+
+			return View("Report", report);
 		}
 	}
 }

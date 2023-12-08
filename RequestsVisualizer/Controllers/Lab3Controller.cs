@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RequestsVisualizer.Infrastructure.Repositories;
 using RequestsVisualizer.Models.Lab3;
 
 namespace RequestsVisualizer.Controllers
@@ -12,7 +13,7 @@ namespace RequestsVisualizer.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetReport(ReportRequest reportRequest)
+		public IActionResult GetReport(ReportRequest reportRequest)
 		{
 			#region Input validation
 
@@ -23,27 +24,17 @@ namespace RequestsVisualizer.Controllers
 
 			#endregion
 
-			var httpClient = new HttpClient();
+			var request =
+				$"api/lab3?groupnumber={reportRequest.GroupNumber}&startdate={reportRequest.StartDate}&enddate={reportRequest.EndDate}";
+			var response = new HttpRepository<Report>("http://gateway:80/", reportRequest.Token).GetData(request)
+				.GetAwaiter().GetResult();
 
-			try
+			if (response.Status != 200)
 			{
-				httpClient.BaseAddress = new Uri("http://gateway:80/");
-				httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {reportRequest.Token}");
-
-				var response = await httpClient.GetAsync(
-					$"api/lab3?groupnumber={reportRequest.GroupNumber}&startdate={reportRequest.StartDate}&enddate={reportRequest.EndDate}");
-				response.EnsureSuccessStatusCode();
-
-				var responseBody = await response.Content.ReadAsStringAsync();
-				var report = JsonConvert.DeserializeObject<Report>(responseBody);
-
-				return View("Report", report);
+				return View("Report", new Report() { Error = response.ErrorMessage });
 			}
-			catch (Exception ex)
-			{
-				return View("Report", new Report() { Error = ex.Message });
-			}
+
+			return View("Report", response.Response);
 		}
-
 	}
 }
