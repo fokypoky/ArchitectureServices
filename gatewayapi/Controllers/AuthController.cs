@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using gatewayapi.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using static System.Net.Mime.MediaTypeNames;
@@ -13,7 +14,7 @@ namespace gatewayapi.Controllers
 	[ApiController]
 	public class AuthController : ControllerBase
 	{
-		public static List<User> Users { get; } = new List<User>()
+		private static List<User> Users { get; } = new List<User>()
 		{
 			new User() {Login = "admin", Password = "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"}, // 12345 SHA-256
 			new User() {Login = "user2023", Password = "d398b29d3dbbb9bf201d4c7e1c19ff9d43c15fd45a0cec46fbe9885ec3f6e97f"} // 2023 SHA-256
@@ -23,23 +24,32 @@ namespace gatewayapi.Controllers
 		public ActionResult<string> Get(string login, string password)
 		{
 			string passwordHash = GetHash(password);
-			if (Users.FirstOrDefault(u => u.Login == login && u.Password == passwordHash) is null)
+
+			var user = Users.FirstOrDefault(u => u.Login == login && u.Password == passwordHash);
+
+			if (user == null)
 			{
 				return BadRequest("Incorrect login or password");
 			}
 
+			int userIndex = Users.IndexOf(user);
 			var tokenHandler = new JwtSecurityTokenHandler();
 
-			var key = Encoding.UTF8.GetBytes("keykeykeykeykeykeykeykeykeykey12");
-
-			var descriptor = new SecurityTokenDescriptor()
+			if (user.Token == null || DateTime.Now >= user.Token.ValidTo)
 			{
-				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-			};
+				var key = Encoding.UTF8.GetBytes("keykeykeykeykeykeykeykeykeykey12");
 
-			var token = tokenHandler.CreateToken(descriptor);
+				var descriptor = new SecurityTokenDescriptor()
+				{
+					SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
+					Expires = DateTime.Now.AddDays(1),
+				};
 
-			return Ok(tokenHandler.WriteToken(token));
+				user.Token = tokenHandler.CreateToken(descriptor);
+				Users[userIndex] = user;
+			}
+
+			return Ok(tokenHandler.WriteToken(user.Token));
 		}
 
 		private string GetHash(string input)
