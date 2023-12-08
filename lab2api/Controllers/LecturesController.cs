@@ -6,6 +6,7 @@ using lab3api.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace lab2api.Controllers
 {
@@ -47,16 +48,16 @@ namespace lab2api.Controllers
 						}
 					}
 
-					report.Add(new LectureReport() {
-							Annotation = lecture.Annotation,
-							ListenersCount = maxListeners,
-							Type = lecture.Type.Type,
-							Requirements = lecture.Requirements
+					report.Add(new LectureReport()
+					{
+						Annotation = lecture.Annotation,
+						ListenersCount = maxListeners,
+						Type = lecture.Type.Type,
+						Requirements = lecture.Requirements
 					});
 				}
 
-				var response = JsonSerializer.Serialize(report, new JsonSerializerOptions() {ReferenceHandler = ReferenceHandler.Preserve});
-				return Ok(report);
+				return Ok(JsonConvert.SerializeObject(report));
 			}
 		}
 	}
