@@ -3,7 +3,7 @@ const { createClient } = require("redis");
 require("dotenv").config();
 
 const kafka = new Kafka({
-	clientId: "logging-service-client",
+	clientId: "redis-transformer",
 	brokers: [`${process.env.BROKER_HOST}:${process.env.BROKER_PORT}`],
 });
 
@@ -14,7 +14,7 @@ const client = createClient({
 	},
 });
 
-const consumer = kafka.consumer({ groupId: "data-transform-group" });
+const consumer = kafka.consumer({ groupId: "redis-data-transform-group" });
 
 const run = async () => {
 	await client.connect();
@@ -25,12 +25,12 @@ const run = async () => {
 	});
 
 	await consumer.run({
-		eachMessage: async ({message}) => {
+		eachMessage: async ({ message }) => {
 			try {
 				const json = JSON.parse(message.value.toString());
-				
+
 				// удаление
-				if(!json?.payload?.after) {
+				if (!json?.payload?.after) {
 					await client.del(json.payload.before.passbook_number);
 				} else {
 					const newValue = `${json.payload.after.name};${json.payload.after.group_id}`;
