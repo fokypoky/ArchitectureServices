@@ -41,8 +41,15 @@ const run = async () => {
 				};
 
 				let url = `http://${process.env.ELASTIC_SEARCH_URL}:${process.env.ELASTIC_SEARCH_PORT}/${topic}/_doc/${id}_${message.timestamp}`;
-				// TODO: пофиксить название документа для топиков visits. у них нет id 
-				
+
+				if (topic.includes('pg.public.visits')) {
+					const studentId = json.payload.before?.student_id ?? json.payload.after?.student_id;
+					const lectureId = json.payload.before?.lecture_id ?? json.payload.after?.lecture_id;
+					const date = json.payload.before?.date ?? json.payload.after?.date;
+
+					url = `http://${process.env.ELASTIC_SEARCH_URL}:${process.env.ELASTIC_SEARCH_PORT}/${topic}/_doc/${studentId}_${lectureId}_${date}`;
+				}
+
 				fetch(url, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
