@@ -76,6 +76,30 @@ create table visits (
 	FOREIGN KEY(lecture_id) REFERENCES lectures(id)
 ) PARTITION BY RANGE(date);
 
+CREATE TABLE group_course (
+	id serial not null PRIMARY KEY,
+	group_id int not null,
+	course_id int not null,
+	foreign key(group_id) references groups(id),
+	foreign key(course_id) references courses(id)
+);
+
+CREATE TABLE speciality_course (
+	id serial not null PRIMARY KEY,
+	speciality_id int not null,
+	course_id int not null,
+	foreign key(speciality_id) references specialities(id),
+	foreign key(course_id) references courses(id)
+);
+
+CREATE TABLE department_speciality (
+	id serial not null PRIMARY KEY,
+	department_id int not null,
+	speciality_id int not null,
+	foreign key(department_id) references departments(id),
+	foreign key(speciality_id) references specialities(id)
+);
+
 CREATE TABLE visits_202305 PARTITION of visits
 	FOR VALUES FROM ('2023-05-01T00:00:00') TO ('2023-05-31T23:59:59');
 
