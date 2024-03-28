@@ -10,6 +10,9 @@ alter table timetable replica identity FULL;
 alter table visits_202305 replica identity FULL;
 alter table visits_202306 replica identity FULL;
 alter table visits_202307 replica identity FULL;
+alter table department_speciality replica identity FULL;
+alter table group_course replica identity FULL;
+alter table speciality_course replica identity FULL;
 
 select pg_create_logical_replication_slot('pg_debezium_slot', 'pgoutput');
 
