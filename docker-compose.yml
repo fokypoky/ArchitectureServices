@@ -69,7 +69,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://broker:9092
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
@@ -235,8 +235,49 @@ services:
       - neo4j:/data
       - neo4j-conf:/conf
       - neo4j-plugins:/plugins
+  
+  telegraf:
+    container_name: telegraf
+    image: telegraf:1.30.1
+    volumes:
+    # TODO: use $PWD
+      - C:\Users\fokypoky\Documents\projects\ArchitectureServices\telegraf\telegraf.conf:/etc/telegraf/telegraf.conf
+    depends_on:
+      - broker
+      - influxdb
+
+  influxdb:
+    container_name: influxdb
+    image: influxdb:2.7.5
+    volumes:
+      - influx-db:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=university
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+      - INFLUXDB_USER=telegraf
+      - INFLUXDB_USER_PASSWORD=telegraf
+      - INFLUXDB_HTTP_AUTH_ENABLED=true
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:main
+    ports:
+      - "3333:3000"
+    depends_on:
+      - influxdb
+    volumes:
+      - grafana:/var/lib/grafana
 
 volumes:
+  grafana:
+    external: true
+    name: grafana
+  influx-db:
+    external: true
+    name: influx-db
   neo4j-conf:
     external: true
     name: neo4j-conf
